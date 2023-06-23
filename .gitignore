@@ -1,7 +1,9 @@
 *.mp4
 *.mp3
 *.jpg
+*.jpeg
 venv
 .vscode
 __pycache__
+.code-workspace
 
