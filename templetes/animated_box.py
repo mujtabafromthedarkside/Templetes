@@ -1,4 +1,5 @@
 import cv2
+import os
 import numpy as np
 
 def animated_box(video_path, start_time, end_time, output_path):
@@ -19,8 +20,8 @@ def animated_box(video_path, start_time, end_time, output_path):
                           (frame_width, frame_height))
     
     # sprite = rounded box, in this function
-    sprite = cv2.imread('subscribe2.png', cv2.IMREAD_UNCHANGED)
-    sprite2 = cv2.imread('youtube.png', cv2.IMREAD_UNCHANGED)
+    sprite = cv2.imread(os.path.join('templetes', 'assets','subscribe2.png'), cv2.IMREAD_UNCHANGED)
+    sprite2 = cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED)
     sprite = changeColor(sprite, [0,0,255,255],[255,255,255,255], [255,255,255])
     
     # Loop through the frames and apply the effect
@@ -55,6 +56,9 @@ def animated_box(video_path, start_time, end_time, output_path):
             if FINAL_STATE_REACHED:
                 resized_sprite2 = cv2.resize(sprite2, (SIZE,SIZE))
                 SPRITE2_TRANSLATION = min(SPRITE2_TRANSLATION + SPRITE2_TRANSLATION_CHANGE, MAX_SPRITE2_TRANSLATION)
+                
+                if SPRITE2_TRANSLATION == MAX_SPRITE2_TRANSLATION and SPRITE2_TRANSLATION - SPRITE2_TRANSLATION_CHANGE != MAX_SPRITE2_TRANSLATION:
+                    resized_sprite2 = changeColor(resized_sprite2, [255,255,255,255],[0,0,0,255], [255,255,255])
                 for c in range(0, 3):
                     frame[frame_y-SPRITE2_TRANSLATION:frame_y+resized_sprite2.shape[0]-SPRITE2_TRANSLATION, frame_x:frame_x+resized_sprite2.shape[1], c] = resized_sprite2[:, :, c] * (resized_sprite2[:, :, 3] / 255.0) + frame[frame_y-SPRITE2_TRANSLATION:frame_y+resized_sprite2.shape[0]-SPRITE2_TRANSLATION, frame_x:frame_x+resized_sprite2.shape[1], c] * (1.0 - resized_sprite2[:, :, 3] / 255.0)
 
