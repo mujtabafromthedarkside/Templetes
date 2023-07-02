@@ -1,12 +1,7 @@
 import cv2
 import numpy as np
 
-
-import cv2
-import numpy as np
-
-
-def tv_filter(video_path, start_time, output_time, output_path):
+def tv_filter(video_path, start_time, end_time, output_path):
     cap = cv2.VideoCapture(video_path)
 
     # Get video properties
@@ -16,7 +11,7 @@ def tv_filter(video_path, start_time, output_time, output_path):
 
     # Calculate start and end frame numbers
     start_frame = int(start_time * fps)
-    end_frame = int(output_time * fps)
+    end_frame = int(end_time * fps)
 
     # Create VideoWriter object to save the output video
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
@@ -49,8 +44,6 @@ def tv_filter(video_path, start_time, output_time, output_path):
         out.write(frame)
 
         frame_num += 1
-        if frame_num > end_frame:
-            break
 
     # Release the resources
     cap.release()
