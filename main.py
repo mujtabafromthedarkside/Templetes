@@ -42,11 +42,17 @@ cap = cv2.VideoCapture(f'output/{os.path.basename(temp_outputs[-1])}')
 fps = cap.get(cv2.CAP_PROP_FPS)
 
 while cap.isOpened():
+    wait_time = int(1000/fps/2)
+    
     ret, frame = cap.read()
     if not ret:
         break
     cv2.imshow('frame', frame)
-    if cv2.waitKey(int(1000/fps)) == ord('q'):
+
+    # pause on pressing spacebar
+    if cv2.waitKey(wait_time) == ord(' '):
+        wait_time = 0
+    if cv2.waitKey(wait_time) == ord('q'):
         break
 
 cap.release()
