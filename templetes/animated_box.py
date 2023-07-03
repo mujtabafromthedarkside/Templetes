@@ -20,9 +20,13 @@ def animated_box(video_path, start_time, end_time, output_path):
                           (frame_width, frame_height))
     
     # sprite = rounded box, in this function
-    sprite = cv2.imread(os.path.join('templetes', 'assets','subscribe2.png'), cv2.IMREAD_UNCHANGED)
-    sprite2 = cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED)
-    sprite = changeColor(sprite, [0,0,255,255],[255,255,255,255], [255,255,255])
+    sprites = []
+    sprites.append(cv2.imread(os.path.join('templetes', 'assets','subscribe2.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
+
     
     # Loop through the frames and apply the effect
     frame_num = 0
@@ -33,12 +37,18 @@ def animated_box(video_path, start_time, end_time, output_path):
     SIZE = 0
     ANGLE = 90
 
-    SIZE_CHANGE = 4
+    SIZE_CHANGE = 2
     ANGLE_CHANGE = 2
 
-    MAX_SPRITE2_TRANSLATION = MAXSIZE + MAXSIZE // 4
-    SPRITE2_TRANSLATION = 0
-    SPRITE2_TRANSLATION_CHANGE = 4
+    SPRITE_MAX_TRANSLATIONS = [0 if i == 0 else MAXSIZE + MAXSIZE // 4 for i in range(len(sprites))]
+    SPRITE_TRANSLATIONS = [0 for i in range(len(sprites))]
+    SPRITE_TRANSLATION_CHANGES = [4 for i in range(len(sprites))]
+
+    for spriteNum in range(len(sprites)):
+        sprites[spriteNum] = changeColor(sprites[spriteNum], [0,0,255,255],[255,255,255,255], [255,255,255])
+        if spriteNum != 0:
+            sprites[spriteNum] = cv2.resize(sprites[spriteNum], (MAXSIZE,MAXSIZE))
+
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
@@ -46,22 +56,53 @@ def animated_box(video_path, start_time, end_time, output_path):
 
         # Apply the effect only within the specified interval
         if start_frame <= frame_num <= end_frame:
-            # Calculate the position to place the second image in the middle of the first image
+            # True only the instance middle sprite reaches final rotation and final size
             if FINAL_STATE_REACHED_ONCE: 
-                sprite = changeColor(sprite, [255,255,255,255],[0,0,0,255], [255,255,255])
+                sprites[0] = changeColor(sprites[0], [255,255,255,255],[0,0,0,255], [255,255,255])
                 FINAL_STATE_REACHED = True
 
-            resized_sprite = cv2.resize(sprite, (SIZE,SIZE))
+            # resized_sprite = cv2.resize(sprite, (SIZE,SIZE))
+            resized_sprite = cv2.resize(sprites[0], (SIZE,SIZE))
 
+            # If middle sprite has reached final rotation and final size
             if FINAL_STATE_REACHED:
-                resized_sprite2 = cv2.resize(sprite2, (SIZE,SIZE))
-                SPRITE2_TRANSLATION = min(SPRITE2_TRANSLATION + SPRITE2_TRANSLATION_CHANGE, MAX_SPRITE2_TRANSLATION)
+                # UP = 1
+                spriteNumber =  1
+                if SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]:
+                    sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
                 
-                if SPRITE2_TRANSLATION == MAX_SPRITE2_TRANSLATION and SPRITE2_TRANSLATION - SPRITE2_TRANSLATION_CHANGE != MAX_SPRITE2_TRANSLATION:
-                    resized_sprite2 = changeColor(resized_sprite2, [255,255,255,255],[0,0,0,255], [255,255,255])
                 for c in range(0, 3):
-                    frame[frame_y-SPRITE2_TRANSLATION:frame_y+resized_sprite2.shape[0]-SPRITE2_TRANSLATION, frame_x:frame_x+resized_sprite2.shape[1], c] = resized_sprite2[:, :, c] * (resized_sprite2[:, :, 3] / 255.0) + frame[frame_y-SPRITE2_TRANSLATION:frame_y+resized_sprite2.shape[0]-SPRITE2_TRANSLATION, frame_x:frame_x+resized_sprite2.shape[1], c] * (1.0 - resized_sprite2[:, :, 3] / 255.0)
+                    frame[frame_y-SPRITE_TRANSLATIONS[spriteNumber]:frame_y+sprites[1].shape[0]-SPRITE_TRANSLATIONS[spriteNumber], frame_x:frame_x+sprites[1].shape[1], c] = sprites[1][:, :, c] * (sprites[1][:, :, 3] / 255.0) + frame[frame_y-SPRITE_TRANSLATIONS[spriteNumber]:frame_y+sprites[1].shape[0]-SPRITE_TRANSLATIONS[spriteNumber], frame_x:frame_x+sprites[1].shape[1], c] * (1.0 - sprites[1][:, :, 3] / 255.0)
 
+                # DOWN = 2
+                spriteNumber =  2
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
+                    sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
+                
+                for c in range(0, 3):
+                    frame[frame_y+SPRITE_TRANSLATIONS[spriteNumber]:frame_y+sprites[1].shape[0]+SPRITE_TRANSLATIONS[spriteNumber], frame_x:frame_x+sprites[1].shape[1], c] = sprites[1][:, :, c] * (sprites[1][:, :, 3] / 255.0) + frame[frame_y+SPRITE_TRANSLATIONS[spriteNumber]:frame_y+sprites[1].shape[0]+SPRITE_TRANSLATIONS[spriteNumber], frame_x:frame_x+sprites[1].shape[1], c] * (1.0 - sprites[1][:, :, 3] / 255.0)
+
+                # LEFT = 3
+                spriteNumber =  3
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
+                    sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
+                
+                for c in range(0, 3):
+                    frame[frame_y:frame_y+sprites[1].shape[0], frame_x-SPRITE_TRANSLATIONS[spriteNumber]:frame_x+sprites[1].shape[1]-SPRITE_TRANSLATIONS[spriteNumber], c] = sprites[1][:, :, c] * (sprites[1][:, :, 3] / 255.0) + frame[frame_y:frame_y+sprites[1].shape[0], frame_x-SPRITE_TRANSLATIONS[spriteNumber]:frame_x+sprites[1].shape[1]-SPRITE_TRANSLATIONS[spriteNumber], c] * (1.0 - sprites[1][:, :, 3] / 255.0)
+
+                # RIGHT = 4
+                spriteNumber =  4
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
+                    sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
+                
+                for c in range(0, 3):
+                    frame[frame_y:frame_y+sprites[1].shape[0], frame_x+SPRITE_TRANSLATIONS[spriteNumber]:frame_x+sprites[1].shape[1]+SPRITE_TRANSLATIONS[spriteNumber], c] = sprites[1][:, :, c] * (sprites[1][:, :, 3] / 255.0) + frame[frame_y:frame_y+sprites[1].shape[0], frame_x+SPRITE_TRANSLATIONS[spriteNumber]:frame_x+sprites[1].shape[1]+SPRITE_TRANSLATIONS[spriteNumber], c] * (1.0 - sprites[1][:, :, 3] / 255.0)
+
+                # Update sprite translations
+                for spriteNum in range(len(sprites)):
+                    if spriteNum == 0: continue
+
+                    SPRITE_TRANSLATIONS[spriteNum] = min(SPRITE_TRANSLATIONS[spriteNum] + SPRITE_TRANSLATION_CHANGES[spriteNum], SPRITE_MAX_TRANSLATIONS[spriteNum])
 
             frame_x = (frame.shape[1] - resized_sprite.shape[1]) // 2
             frame_y = (frame.shape[0] - resized_sprite.shape[0]) // 2
