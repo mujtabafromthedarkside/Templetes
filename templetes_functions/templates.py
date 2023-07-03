@@ -81,7 +81,7 @@ def template2(image_path):
     # create_red_box_animation(temp_output3, 1, 5, temp_output4)
 
     # remove f'{random_number}.mp4' from directory temp and move f'{random_number + 1}.mp4' to directory output
-    # os.remove(temp_output)
+    os.remove(temp_output)
     # os.remove(temp_output2)
     # os.remove(temp_output3)
     shutil.move(temp_output2, 'output')
