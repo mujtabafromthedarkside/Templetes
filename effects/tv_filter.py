@@ -53,6 +53,6 @@ def tv_filter(video_path, start_time, end_time, output_path):
 
 
 if __name__ == "__main__":
-    apply_1950s_effect("/home/pydashninja/templetes/video.mp4",
-                       0, 10, "/home/pydashninja/templetes/video2.mp4")
+    tv_filter("/home/pydashninja/templetes/video.mp4",
+              0, 10, "/home/pydashninja/templetes/video2.mp4")
     print("here")
