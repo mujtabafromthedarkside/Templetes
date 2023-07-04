@@ -5,3 +5,4 @@ from effects.red_shade import create_red_box_animation
 from effects.shake import shake
 from effects.circle import translate_in_circle
 from effects.shake_switch import switch_images_with_vibration
+from effects.grey_image_in_window import grey_image_in_window_vibrate_and_shifts
