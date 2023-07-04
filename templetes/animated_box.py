@@ -35,34 +35,15 @@ def animated_box(video_path, start_time, end_time, output_path):
     FINAL_STATE_REACHED = False
 
     SIZE = 0
-    ANGLE = 180
+    ANGLE = 90
 
-    SIZE_CHANGE = 3
-    ANGLE_CHANGE = 4
-
-
-    INITIAL_TRANSLATION_CHANGE = 15
-    MAX_TRANSLATION = MAXSIZE + MAXSIZE// 4
-
-    # FRAMES_TRANSLATION = MAX_TRANSLATION / INITIAL_TRANSLATION_CHANGE
-    # x_array = np.arange(FRAMES_TRANSLATION)
-    # exp_values = INITIAL_TRANSLATION_CHANGE * np.exp(-x_array/INITIAL_TRANSLATION_CHANGE * np.log(INITIAL_TRANSLATION_CHANGE))
-    # cumulative_sum = np.cumsum(exp_values)
-    # normalized_values = exp_values / cumulative_sum[-1]  # Normalize the values to ensure the cumulative sum reaches MAXSIZE
-    # result_exp = np.round(normalized_values * MAXSIZE).astype(int)
-    # print(result_exp)
-    FRAMES_TRANSLATION = MAX_TRANSLATION*2 / INITIAL_TRANSLATION_CHANGE
-    DIFFERENCE = INITIAL_TRANSLATION_CHANGE/(FRAMES_TRANSLATION-1)
-    result_lin = np.arange(0, INITIAL_TRANSLATION_CHANGE, DIFFERENCE)
-    result_lin = np.round(np.array(list((reversed(result_lin))))).astype(int)
-
+    SIZE_CHANGE = 2
+    ANGLE_CHANGE = 2
 
     SPRITE_MAX_TRANSLATIONS = [0 if i == 0 else MAXSIZE + MAXSIZE // 4 for i in range(len(sprites))]
     SPRITE_TRANSLATIONS = [0 for i in range(len(sprites))]
-    # SPRITE_TRANSLATION_CHANGES = [result_exp[0] for i in range(len(sprites))]
-    SPRITE_TRANSLATION_CHANGES = [result_lin[0] for i in range(len(sprites))]
+    SPRITE_TRANSLATION_CHANGES = [4 for i in range(len(sprites))]
 
-    TRANSLATION_FRAME_NUMBER = 0
     for spriteNum in range(len(sprites)):
         sprites[spriteNum] = changeColor(sprites[spriteNum], [0,0,255,255],[255,255,255,255], [255,255,255])
         if spriteNum != 0:
@@ -87,7 +68,7 @@ def animated_box(video_path, start_time, end_time, output_path):
             if FINAL_STATE_REACHED:
                 # UP = 1
                 spriteNumber =  1
-                if (TRANSLATION_FRAME_NUMBER < len(result_lin) and result_lin[TRANSLATION_FRAME_NUMBER] == 0) or (SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]):
+                if SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]:
                     sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
                 
                 for c in range(0, 3):
@@ -95,7 +76,7 @@ def animated_box(video_path, start_time, end_time, output_path):
 
                 # DOWN = 2
                 spriteNumber =  2
-                if (TRANSLATION_FRAME_NUMBER < len(result_lin) and result_lin[TRANSLATION_FRAME_NUMBER] == 0) or (SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]):
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
                     sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
                 
                 for c in range(0, 3):
@@ -103,7 +84,7 @@ def animated_box(video_path, start_time, end_time, output_path):
 
                 # LEFT = 3
                 spriteNumber =  3
-                if (TRANSLATION_FRAME_NUMBER < len(result_lin) and result_lin[TRANSLATION_FRAME_NUMBER] == 0) or (SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]):
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
                     sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
                 
                 for c in range(0, 3):
@@ -111,7 +92,7 @@ def animated_box(video_path, start_time, end_time, output_path):
 
                 # RIGHT = 4
                 spriteNumber =  4
-                if (TRANSLATION_FRAME_NUMBER < len(result_lin) and result_lin[TRANSLATION_FRAME_NUMBER] == 0) or (SPRITE_TRANSLATIONS[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] + SPRITE_TRANSLATION_CHANGES[spriteNumber] >= SPRITE_MAX_TRANSLATIONS[spriteNumber]):
+                if SPRITE_TRANSLATIONS[spriteNumber] == SPRITE_MAX_TRANSLATIONS[spriteNumber] and SPRITE_TRANSLATIONS[spriteNumber] - SPRITE_TRANSLATION_CHANGES[spriteNumber] != SPRITE_MAX_TRANSLATIONS[spriteNumber]:
                     sprites[spriteNumber] = changeColor(sprites[spriteNumber], [255,255,255,255],[0,0,0,255], [255,255,255])
                 
                 for c in range(0, 3):
@@ -122,11 +103,6 @@ def animated_box(video_path, start_time, end_time, output_path):
                     if spriteNum == 0: continue
 
                     SPRITE_TRANSLATIONS[spriteNum] = min(SPRITE_TRANSLATIONS[spriteNum] + SPRITE_TRANSLATION_CHANGES[spriteNum], SPRITE_MAX_TRANSLATIONS[spriteNum])
-                
-                TRANSLATION_FRAME_NUMBER += 1
-                if TRANSLATION_FRAME_NUMBER < len(result_lin):
-                    # SPRITE_TRANSLATION_CHANGES = [result_exp[TRANSLATION_FRAME_NUMBER] for i in range(len(sprites))]
-                    SPRITE_TRANSLATION_CHANGES = [result_lin[TRANSLATION_FRAME_NUMBER] for i in range(len(sprites))]
 
             frame_x = (frame.shape[1] - resized_sprite.shape[1]) // 2
             frame_y = (frame.shape[0] - resized_sprite.shape[0]) // 2

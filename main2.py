@@ -47,13 +47,13 @@ output_path = os.path.join('output', temp_outputs[-1][5:])
 print(f'saving final output to {output_path}')
 if os.path.exists(output_path):
     os.remove(output_path)
-
+    
 shutil.move(temp_outputs[-1], 'output')
 
 # play a video
 cap = cv2.VideoCapture(f'output/{os.path.basename(temp_outputs[-1])}')
 fps = cap.get(cv2.CAP_PROP_FPS)
-print(f'{fps} fps')
+print(fps)
 
 while cap.isOpened():
     wait_time = int(1000/fps/2)
@@ -65,12 +65,8 @@ while cap.isOpened():
 
     # pause on pressing spacebar
     if cv2.waitKey(wait_time) == ord(' '):
-        print('paused video')
         wait_time = 0
-    if wait_time == 0 and cv2.waitKey(wait_time):
-        print("play video")
-    elif cv2.waitKey(wait_time) == ord('q'):
-        print('exit')
+    if cv2.waitKey(wait_time) == ord('q'):
         break
 
 cap.release()
