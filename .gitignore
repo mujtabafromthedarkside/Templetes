@@ -1,6 +1,4 @@
 *.mp4
-*.jpg
-*.jpeg
 venv
 .vscode
 __pycache__
