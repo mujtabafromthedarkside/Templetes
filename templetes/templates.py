@@ -5,6 +5,10 @@ from effects import *
 import shutil
 from utils import *
 
+if not os.path.exists('output'):
+    os.mkdir('output')
+if not os.path.exists('temp'):
+    os.mkdir('temp')
 
 def template1(image_path):
 
@@ -133,3 +137,6 @@ def templete3(image_path):
                 os.unlink(file_path)
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+def templete4(image_path):
+    animated_box()

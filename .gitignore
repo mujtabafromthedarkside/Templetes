@@ -4,3 +4,6 @@ venv
 __pycache__
 *.code-workspace
 
+1_cleanup.jpeg
+1.npy
+1.jpeg

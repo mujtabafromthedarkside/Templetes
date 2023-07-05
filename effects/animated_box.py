@@ -219,8 +219,3 @@ def changeColor(imgArray, replacement_color_shape, replacement_color_text, targe
     # # Apply the replacement color to the pixels that match the target color
     # imgArray[mask1] = replacement_color
     return imgArray
-
-if __name__ == "__main__":
-    animated_box("/home/pydashninja/templetes/video.mp4",
-                       0, 10, "/home/pydashninja/templetes/video2.mp4")
-    print("here")
