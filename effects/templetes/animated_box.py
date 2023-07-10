@@ -21,11 +21,11 @@ def animated_box(video_path, start_time, end_time, output_path):
     
     # sprite = rounded box, in this function
     sprites = []
-    sprites.append(cv2.imread(os.path.join('templetes', 'assets','subscribe2.png'), cv2.IMREAD_UNCHANGED))
-    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
-    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
-    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
-    sprites.append(cv2.imread(os.path.join('templetes', 'assets','youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('assets', 'images', 'subscribe2.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('assets', 'images', 'youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('assets', 'images', 'youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('assets', 'images', 'youtube.png'), cv2.IMREAD_UNCHANGED))
+    sprites.append(cv2.imread(os.path.join('assets', 'images', 'youtube.png'), cv2.IMREAD_UNCHANGED))
 
     
     # Loop through the frames and apply the effect
@@ -162,7 +162,7 @@ def animated_box(video_path, start_time, end_time, output_path):
     cap.release()
     out.release()
 
-    print("The 1950s effect has been applied, and the output video is saved at:", output_path)
+    print("The animated box effect has been applied, and the output video is saved at:", output_path)
 
 def customAddWeighted(src1, alpha, src2, beta, gamma=0):
     # Check if the images have the same size
@@ -219,8 +219,3 @@ def changeColor(imgArray, replacement_color_shape, replacement_color_text, targe
     # # Apply the replacement color to the pixels that match the target color
     # imgArray[mask1] = replacement_color
     return imgArray
-
-if __name__ == "__main__":
-    animated_box("/home/pydashninja/templetes/video.mp4",
-                       0, 10, "/home/pydashninja/templetes/video2.mp4")
-    print("here")
