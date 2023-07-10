@@ -29,6 +29,7 @@ def falling_squares(video_path, start_time, output_path):
 
     widthDivider, heightDivider = 3,3
     blockSizeW, blockSizeH = width//widthDivider , height//heightDivider
+
     numberBlocks = widthDivider * heightDivider
     numberBlocksDone = 0
     
@@ -42,7 +43,7 @@ def falling_squares(video_path, start_time, output_path):
             #     initial_x2 += BackgroundBorderThickness
             x1,x2 = initial_x1,initial_x2
             y12,y22 = initial_y1,initial_y2
-            print(x1,y12, x2,y22)
+            # print(x1,y12, x2,y22)
             y11,y21 = -(y22-y12), borderSize
 
             squareReached = False
@@ -94,7 +95,7 @@ def falling_squares(video_path, start_time, output_path):
                         numberBlocksDone += 1
                     frame[y11:y21, x1:x2] = square
                     if breakFlag:
-                        print('breakFlag')
+                        # print('breakFlag')
                         break
                 else:
                     # print("complete invert")

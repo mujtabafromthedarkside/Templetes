@@ -6,5 +6,4 @@ from effects.shake import shake
 from effects.circle import translate_in_circle
 from effects.shake_switch import switch_images_with_vibration
 from effects.grey_image_in_window import grey_image_in_window_vibrate_and_shifts
-from effects.animated_box import animated_box
-from effects.falling_squares import falling_squares
+from effects.templetes import *
