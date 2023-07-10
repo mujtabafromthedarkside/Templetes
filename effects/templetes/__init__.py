@@ -1,0 +1,1 @@
+from effects.templetes.YourAreNotCoolTemplate import YourAreNotCoolTemplate

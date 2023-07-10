@@ -95,6 +95,7 @@ def template2(image_path, list_of_images):
     print("Video with audio added successfully.")
 
 
+# incomplete
 def templete3(image_path):
 
     random_number = random.randint(0, 10000)
@@ -110,6 +111,48 @@ def templete3(image_path):
     os.remove(temp_output)
     shutil.move(temp_output2, 'output')
     print("Video with audio added successfully.")
+
+    cap = cv2.VideoCapture(f'output/{random_number+1}.mp4')
+    fps = cap.get(cv2.CAP_PROP_FPS)
+
+    while cap.isOpened():
+        ret, frame = cap.read()
+        if not ret:
+            break
+        cv2.imshow('frame', frame)
+        if cv2.waitKey(int(1000/fps)) == ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+    # remove files from a directory output/*
+    for filename in os.listdir('output'):
+        file_path = os.path.join('output', filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+        except Exception as e:
+            print('Failed to delete %s. Reason: %s' % (file_path, e))
+
+
+def templete6(images_path_list):
+    if len(images_path_list) > 2:
+        print("Please provide only 2 images.")
+        return
+    random_number = random.randint(0, 10000)
+    random_number = random_number + random.randint(0, 10000)
+    temp_output = f'temp/{random_number}.mp4'
+
+    create_video_from_image(images_path_list[0], 10, 30, temp_output)
+
+    temp_output2 = f'temp/{random_number + 1}.mp4'
+
+    YourAreNotCoolTemplate(
+        images_path_list[1], temp_output, 1, 10, temp_output2)
+
+    os.remove(temp_output)
+    shutil.move(temp_output, 'output')
 
     cap = cv2.VideoCapture(f'output/{random_number+1}.mp4')
     fps = cap.get(cv2.CAP_PROP_FPS)
