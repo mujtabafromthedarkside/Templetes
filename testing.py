@@ -79,10 +79,10 @@ cap.release()
 cv2.destroyAllWindows()
 
 # remove files from a directory output/*
-# for filename in os.listdir('output'):
-#     file_path = os.path.join('output', filename)
-#     try:
-#         if os.path.isfile(file_path) or os.path.islink(file_path):
-#             os.unlink(file_path)
-#     except Exception as e:
-#         print('Failed to delete %s. Reason: %s' % (file_path, e))
+for filename in os.listdir('output'):
+    file_path = os.path.join('output', filename)
+    try:
+        if os.path.isfile(file_path) or os.path.islink(file_path):
+            os.unlink(file_path)
+    except Exception as e:
+        print('Failed to delete %s. Reason: %s' % (file_path, e))
