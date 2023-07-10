@@ -111,7 +111,7 @@ def templete3(image_path):
     shutil.move(temp_output2, 'output')
     print("Video with audio added successfully.")
 
-    cap = cv2.VideoCapture(f'output/{random_number + 1}.mp4')
+    cap = cv2.VideoCapture(f'output/{random_number+1}.mp4')
     fps = cap.get(cv2.CAP_PROP_FPS)
 
     while cap.isOpened():
