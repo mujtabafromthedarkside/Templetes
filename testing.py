@@ -2,8 +2,7 @@ import cv2
 import random
 import os
 import shutil
-from effects import create_video_from_image, apply_blinking_effect, tv_filter
-from templetes import animated_box
+from effects import create_video_from_image, apply_blinking_effect, tv_filter, animated_box, falling_squares
 # read image
 
 TESTING = True
@@ -24,15 +23,18 @@ temp_outputs = [os.path.join('temp',f'{random_number}.mp4')]
 # image_path, duration, fps, output_path
 if not os.path.exists('temp'):
     os.mkdir('temp')
-create_video_from_image(imgName, 5, 30, temp_outputs[-1])
+create_video_from_image(imgName, 12, 30, temp_outputs[-1])
 
 random_number += 1
 temp_outputs.append(os.path.join('temp',f'{random_number}.mp4'))
-tv_filter(temp_outputs[-2], 4,5, temp_outputs[-1])
+falling_squares(temp_outputs[-2], 0, temp_outputs[-1])
+# random_number += 1
+# temp_outputs.append(os.path.join('temp',f'{random_number}.mp4'))
+# tv_filter(temp_outputs[-2], 4,5, temp_outputs[-1])
 
-random_number += 1
-temp_outputs.append(os.path.join('temp',f'{random_number}.mp4'))
-animated_box(temp_outputs[-2], 1,5, temp_outputs[-1])
+# random_number += 1
+# temp_outputs.append(os.path.join('temp',f'{random_number}.mp4'))
+# animated_box(temp_outputs[-2], 1,5, temp_outputs[-1])
 
 # # remove f'{random_number}.mp4' from directory temp and move f'{random_number + 1}.mp4' to directory output
 for i in range(0,len(temp_outputs)-1):
@@ -77,10 +79,10 @@ cap.release()
 cv2.destroyAllWindows()
 
 # remove files from a directory output/*
-# for filename in os.listdir('output'):
-#     file_path = os.path.join('output', filename)
-#     try:
-#         if os.path.isfile(file_path) or os.path.islink(file_path):
-#             os.unlink(file_path)
-#     except Exception as e:
-#         print('Failed to delete %s. Reason: %s' % (file_path, e))
+for filename in os.listdir('output'):
+    file_path = os.path.join('output', filename)
+    try:
+        if os.path.isfile(file_path) or os.path.islink(file_path):
+            os.unlink(file_path)
+    except Exception as e:
+        print('Failed to delete %s. Reason: %s' % (file_path, e))

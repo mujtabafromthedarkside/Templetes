@@ -6,4 +6,8 @@ from effects.shake import shake
 from effects.circle import translate_in_circle
 from effects.shake_switch import switch_images_with_vibration
 from effects.grey_image_in_window import grey_image_in_window_vibrate_and_shifts
+<<<<<<< HEAD
 from effects.templetes import *
+=======
+from effects.templetes import *
+>>>>>>> 4bb827a9af6a148dbb5e93307666cec1259fdca8
